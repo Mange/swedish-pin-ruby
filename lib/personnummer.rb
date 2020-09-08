@@ -39,7 +39,7 @@ module Personnummer
     # (Integer)
     def get_age
       today = Time.new
-      
+
       year = "#{@century}#{@year}".to_i
       month = @month.to_i
       day = @day.to_i
@@ -76,7 +76,7 @@ module Personnummer
       if !match
         raise "Could not parse #{personnummer} as a valid Personnummer"
       end
-    
+
       century = match[1]
       year = match[2]
       month = match[3]
@@ -101,7 +101,7 @@ module Personnummer
           sep = '+'
         end
       end
-      
+
       return {
         century: century,
         year: year,
@@ -118,7 +118,7 @@ module Personnummer
     def test_date(year, month, day)
       Date.valid_date?(year, month, day)
     end
-    
+
     # Checks if the Personnummer is valid
     # (TrueClass/FalseClass)
     def valid

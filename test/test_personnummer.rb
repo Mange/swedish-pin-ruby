@@ -68,13 +68,13 @@ class PersonnummerTest < Minitest::Test
     end
 
     def test_get_age
-      Time.stub :now, Time.utc(2020, "May", 1, 9, 0,0) do
-        assert_equal 34, Personnummer.parse('198507099805').get_age
-        assert_equal 34, Personnummer.parse('198507099813').get_age
+      Time.stub :now, Time.utc(2020, 5, 1, 9, 0,0) do
+        assert_equal 35, Personnummer.parse('198507099805').get_age
+        assert_equal 35, Personnummer.parse('198507099813').get_age
         assert_equal 55, Personnummer.parse('196411139808').get_age
         assert_equal 107, Personnummer.parse('19121212+1212').get_age
-        assert_equal 34, Personnummer.parse('198507699810').get_age
-        assert_equal 34, Personnummer.parse('198507699802').get_age
+        assert_equal 35, Personnummer.parse('198507699810').get_age
+        assert_equal 35, Personnummer.parse('198507699802').get_age
       end
     end
 
