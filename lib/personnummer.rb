@@ -36,7 +36,7 @@ module Personnummer
 
     # Returns the age of the Personnummer's owner
     # (Integer)
-    def get_age
+    def age
       today = Time.new
 
       year = "#{@century}#{@year}".to_i
