@@ -1,6 +1,7 @@
 require "date"
 
 module Personnummer
+  autoload :Generator, "personnummer/generator"
   autoload :ParseError, "personnummer/parse_error"
   autoload :Parser, "personnummer/parser"
   autoload :Personnummer, "personnummer/personnummer"
@@ -24,5 +25,25 @@ module Personnummer
     Parser.new(string, now).valid?
   rescue ArgumentError
     false
+  end
+
+  def self.generate(date = nil, sequence_number = nil)
+    Generator.new(date).generate(sequence_number)
+  end
+
+  # Implementation of Luhn algorithm
+  def self.luhn(str)
+    sum = 0
+
+    (0...str.length).each do |i|
+      v = str[i].to_i
+      v *= 2 - (i % 2)
+      if v > 9
+        v -= 9
+      end
+      sum += v
+    end
+
+    ((sum.to_f / 10).ceil * 10 - sum.to_f).to_i
   end
 end

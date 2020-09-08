@@ -124,7 +124,7 @@ module Personnummer
         @matches["sequence_number"]
       ].join("")
 
-      if luhn(comparator) != control_digit
+      if ::Personnummer.luhn(comparator) != control_digit
         raise ParseError.new("Control digit did not match expected value", :checksum, @input)
       end
     end
@@ -136,22 +136,6 @@ module Personnummer
       unless Date.valid_date?(full_year, month, real_day)
         raise ParseError.new("Input had invalid date", :invalid_date, @input)
       end
-    end
-
-    # Implementation of Luhn algorithm
-    def luhn(str)
-      sum = 0
-
-      (0...str.length).each do |i|
-        v = str[i].to_i
-        v *= 2 - (i % 2)
-        if v > 9
-          v -= 9
-        end
-        sum += v
-      end
-
-      ((sum.to_f / 10).ceil * 10 - sum.to_f).to_i
     end
   end
 end
