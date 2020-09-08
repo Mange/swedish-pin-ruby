@@ -52,15 +52,15 @@ module Personnummer
 
     # Checks if the Personnummer's owner is male
     # (TrueClass/FalseClass)
-    def is_male?
-      sexDigit = @num[-1].to_i
-      sexDigit % 2 == 1
+    def male?
+      sex_digit = @num[-1].to_i
+      sex_digit % 2 == 1
     end
 
     # Checks if the Personnummer's owner is female
     # (TrueClass/FalseClass)
-    def is_female?
-      !is_male?
+    def female?
+      !male?
     end
 
     private

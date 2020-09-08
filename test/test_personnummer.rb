@@ -78,21 +78,21 @@ class PersonnummerTest < Minitest::Test
     end
   end
 
-  def test_is_male
-    assert_equal false, Personnummer.parse("198507099805").is_male?
-    assert_equal true, Personnummer.parse("198507099813").is_male?
-    assert_equal false, Personnummer.parse("196411139808").is_male?
-    assert_equal true, Personnummer.parse("19121212+1212").is_male?
-    assert_equal true, Personnummer.parse("198507699810").is_male?
-    assert_equal false, Personnummer.parse("198507699802").is_male?
+  def test_male?
+    assert_equal false, Personnummer.parse("198507099805").male?
+    assert_equal true, Personnummer.parse("198507099813").male?
+    assert_equal false, Personnummer.parse("196411139808").male?
+    assert_equal true, Personnummer.parse("19121212+1212").male?
+    assert_equal true, Personnummer.parse("198507699810").male?
+    assert_equal false, Personnummer.parse("198507699802").male?
   end
 
-  def test_is_female
-    assert_equal true, Personnummer.parse("198507099805").is_female?
-    assert_equal false, Personnummer.parse("198507099813").is_female?
-    assert_equal true, Personnummer.parse("196411139808").is_female?
-    assert_equal false, Personnummer.parse("19121212+1212").is_female?
-    assert_equal false, Personnummer.parse("198507699810").is_female?
-    assert_equal true, Personnummer.parse("198507699802").is_female?
+  def test_female?
+    assert_equal true, Personnummer.parse("198507099805").female?
+    assert_equal false, Personnummer.parse("198507099813").female?
+    assert_equal true, Personnummer.parse("196411139808").female?
+    assert_equal false, Personnummer.parse("19121212+1212").female?
+    assert_equal false, Personnummer.parse("198507699810").female?
+    assert_equal true, Personnummer.parse("198507699802").female?
   end
 end
