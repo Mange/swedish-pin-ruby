@@ -21,7 +21,7 @@ module Personnummer
 
     # Checks if the Personnummer is a coordination number (Samordningsnummer)
     # (TrueClass/FalseClass)
-    def is_coord
+    def coordination_number?
       test_date(@year.to_i, @month.to_i, @day.to_i - 60)
     end
 
@@ -43,7 +43,7 @@ module Personnummer
       month = @month.to_i
       day = @day.to_i
 
-      if is_coord
+      if coordination_number?
         day -= 60
       end
 
@@ -162,7 +162,7 @@ module Personnummer
   # (TrueClass/FalseClass)
   def self.valid?(personnummer, include_coord = true)
     nummer = parse(personnummer)
-    if !include_coord && nummer.is_coord
+    if !include_coord && nummer.coordination_number?
       return false
     end
     true
