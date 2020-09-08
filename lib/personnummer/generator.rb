@@ -3,13 +3,20 @@
 require "date"
 
 module Personnummer
+  # @private
+  # @api private
+  #
+  # Generator for PINs.
   class Generator
+    # The date all generated PINs will be based on.
     attr_reader :date
 
+    # Creates a new generator for a particular date.
     def initialize(date)
       @date = date || random_date
     end
 
+    # Generate a {Personnummer::Personnummer} with the given sequence number.
     def generate(sequence_number)
       sequence_number ||= random_sequence_number
       Personnummer.new(

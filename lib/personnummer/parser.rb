@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module Personnummer
+  # @api private
+  #
+  # Parser for _Personnummer_.
+  #
+  # Please use {Personnummer.parse} or {Personnummer.valid?} instead.
   class Parser
     MATCHER = /
       \A
@@ -13,9 +18,9 @@ module Personnummer
       (?<control_digit>\d)
       \z
     /x.freeze
+    private_constant :MATCHER
 
-    attr_reader :now
-
+    # Setup a new parser.
     def initialize(input, now = Time.now)
       unless input.is_a?(String)
         raise ArgumentError, "Expected String, got #{input.inspect}"
@@ -26,12 +31,14 @@ module Personnummer
       @matches = MATCHER.match(input.strip)
     end
 
+    # Raise {ParseError} if anything in the input isn't valid.
     def validate
       validate_match
       validate_luhn
       validate_date
     end
 
+    # Check validity without raising.
     def valid?
       validate
       true
@@ -39,6 +46,7 @@ module Personnummer
       false
     end
 
+    # Return +Hash+ of parsed values to be used with {Personnummer::Personnummer#initialize}.
     def parse
       validate
 
@@ -50,6 +58,10 @@ module Personnummer
         control_digit: control_digit
       }
     end
+
+    private
+
+    attr_reader :now
 
     def full_year
       century * 100 + year
@@ -92,8 +104,6 @@ module Personnummer
       Integer(@matches["control_digit"], 10)
     end
 
-    private
-
     def guess_century
       guessed_year = (now.year / 100) * 100 + year
 
@@ -112,7 +122,7 @@ module Personnummer
 
     def validate_match
       unless @matches
-        raise ParseError.new("Input did not match expected format", :invalid_format, @input)
+        raise InvalidFormat.new("Input did not match expected format", @input)
       end
     end
 
@@ -125,16 +135,16 @@ module Personnummer
       ].join("")
 
       if ::Personnummer.luhn(comparator) != control_digit
-        raise ParseError.new("Control digit did not match expected value", :checksum, @input)
+        raise InvalidChecksum.new("Control digit did not match expected value", @input)
       end
     end
 
     def validate_date
-      raise ParseError.new("#{month} is not a valid month", :invalid_date, @input) unless (1..12).cover?(month)
-      raise ParseError.new("#{day} is not a valid day", :invalid_date, @input) unless (1..31).cover?(real_day)
+      raise InvalidDate.new("#{month} is not a valid month", @input) unless (1..12).cover?(month)
+      raise InvalidDate.new("#{day} is not a valid day", @input) unless (1..31).cover?(real_day)
 
       unless Date.valid_date?(full_year, month, real_day)
-        raise ParseError.new("Input had invalid date", :invalid_date, @input)
+        raise InvalidDate.new("Input had invalid date", @input)
       end
     end
   end

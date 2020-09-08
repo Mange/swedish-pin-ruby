@@ -2,9 +2,8 @@ require "minitest/autorun"
 require "personnummer"
 
 class PersonnummerTest < Minitest::Test
-  def assert_parse_error(input)
-    error = assert_raises(Personnummer::ParseError) { Personnummer.parse(input) }
-    yield error
+  def assert_parse_error(input, type)
+    assert_raises(type) { Personnummer.parse(input) }
   end
 
   def test_valid_12_digit_personnummer
@@ -106,28 +105,19 @@ class PersonnummerTest < Minitest::Test
     assert Personnummer.valid?("198507099805")
     assert !Personnummer.valid?("198507099804")
     assert !Personnummer.valid?("198507099806")
-    assert_parse_error("198507099806") do |error|
-      assert error.checksum?
-      assert_equal :checksum, error.kind
-    end
+    assert_parse_error("198507099806", Personnummer::InvalidChecksum)
 
     assert Personnummer.valid?("198507099813")
     assert !Personnummer.valid?("198507099812")
     assert !Personnummer.valid?("198507099814")
-    assert_parse_error("198507099814") do |error|
-      assert error.checksum?
-      assert_equal :checksum, error.kind
-    end
+    assert_parse_error("198507099814", Personnummer::InvalidChecksum)
 
     # Separator does not matter
     assert Personnummer.valid?("850709-9813")
     assert Personnummer.valid?("850709+9813")
     assert !Personnummer.valid?("850709-9812")
     assert !Personnummer.valid?("850709-9814")
-    assert_parse_error("850709-9814") do |error|
-      assert error.checksum?
-      assert_equal :checksum, error.kind
-    end
+    assert_parse_error("850709-9814", Personnummer::InvalidChecksum)
 
     # Century does not matter when checking control digit
     assert Personnummer.valid?("19850709-9813")
@@ -139,10 +129,7 @@ class PersonnummerTest < Minitest::Test
     assert !Personnummer.valid?("850709-981")
     assert !Personnummer.valid?("850709981")
     assert !Personnummer.valid?("10850709981")
-    assert_parse_error("108507099818") do |error|
-      assert_equal :checksum, error.kind
-      assert error.checksum?
-    end
+    assert_parse_error("108507099818", Personnummer::InvalidChecksum)
   end
 
   def test_invalid_personnummer_or_wrong_types
@@ -161,14 +148,14 @@ class PersonnummerTest < Minitest::Test
       end
     end
 
-    assert_parse_error("17850709=9813") { |error| assert_equal(:invalid_format, error.kind) }
-    assert_parse_error("112233-4455") { |error| assert_equal(:checksum, error.kind) }
-    assert_parse_error("19112233-4455") { |error| assert_equal(:checksum, error.kind) }
-    assert_parse_error("20112233-4455") { |error| assert_equal(:checksum, error.kind) }
-    assert_parse_error("9999999999") { |error| assert_equal(:invalid_date, error.kind) }
-    assert_parse_error("199999999999") { |error| assert_equal(:invalid_date, error.kind) }
-    assert_parse_error("199909193776") { |error| assert_equal(:checksum, error.kind) }
-    assert_parse_error("Just a string") { |error| assert_equal(:invalid_format, error.kind) }
+    assert_parse_error("17850709=9813", Personnummer::InvalidFormat)
+    assert_parse_error("112233-4455", Personnummer::InvalidChecksum)
+    assert_parse_error("19112233-4455", Personnummer::InvalidChecksum)
+    assert_parse_error("20112233-4455", Personnummer::InvalidChecksum)
+    assert_parse_error("9999999999", Personnummer::InvalidDate)
+    assert_parse_error("199999999999", Personnummer::InvalidDate)
+    assert_parse_error("199909193776", Personnummer::InvalidChecksum)
+    assert_parse_error("Just a string", Personnummer::InvalidFormat)
   end
 
   def test_age
