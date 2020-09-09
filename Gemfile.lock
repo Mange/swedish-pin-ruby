@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    personnummer (4.0.0)
+    swedish-pin (1.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -39,9 +39,9 @@ PLATFORMS
 
 DEPENDENCIES
   minitest
-  personnummer!
   rake
   standard
+  swedish-pin!
 
 BUNDLED WITH
    2.1.4

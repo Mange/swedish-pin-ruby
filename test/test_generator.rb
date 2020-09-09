@@ -1,5 +1,5 @@
 require "minitest/autorun"
-require "personnummer"
+require "swedish_pin"
 
 class GeneratorTest < Minitest::Test
   def with_predetermined_seed(seed)
@@ -11,10 +11,10 @@ class GeneratorTest < Minitest::Test
   end
 
   def test_generating_specific_date_and_sequence
-    assert_equal "19890707-8136", Personnummer.generate(Date.civil(1989, 7, 7), "813").to_s(12)
-    assert_equal "19890707-8136", Personnummer.generate(Date.civil(1989, 7, 7), 813).to_s(12)
+    assert_equal "19890707-8136", SwedishPIN.generate(Date.civil(1989, 7, 7), "813").to_s(12)
+    assert_equal "19890707-8136", SwedishPIN.generate(Date.civil(1989, 7, 7), 813).to_s(12)
 
-    assert_equal "890707-0133", Personnummer.generate(Date.civil(1989, 7, 7), 13).to_s(10)
+    assert_equal "890707-0133", SwedishPIN.generate(Date.civil(1989, 7, 7), 13).to_s(10)
   end
 
   def test_generating_specific_date_picks_random_sequence
@@ -22,15 +22,15 @@ class GeneratorTest < Minitest::Test
     date = Date.civil(1989, 7, 7)
 
     with_predetermined_seed(1337) do
-      pin1 = Personnummer.generate(date)
+      pin1 = SwedishPIN.generate(date)
     end
 
     with_predetermined_seed(4242) do
-      pin2 = Personnummer.generate(date)
+      pin2 = SwedishPIN.generate(date)
     end
 
     with_predetermined_seed(1337) do
-      pin3 = Personnummer.generate(date)
+      pin3 = SwedishPIN.generate(date)
     end
 
     assert_equal pin1.to_s, pin3.to_s
@@ -45,15 +45,15 @@ class GeneratorTest < Minitest::Test
     pin1, pin2, pin3 = nil
 
     with_predetermined_seed(1337) do
-      pin1 = Personnummer.generate
+      pin1 = SwedishPIN.generate
     end
 
     with_predetermined_seed(4242) do
-      pin2 = Personnummer.generate
+      pin2 = SwedishPIN.generate
     end
 
     with_predetermined_seed(1337) do
-      pin3 = Personnummer.generate
+      pin3 = SwedishPIN.generate
     end
 
     assert_equal pin1.to_s, pin3.to_s
@@ -64,11 +64,11 @@ class GeneratorTest < Minitest::Test
     1000.times do
       # If any pin is invalid, then it should fail to parse or parse
       # differently.
-      pin = Personnummer.generate
+      pin = SwedishPIN.generate
       begin
-        copy = Personnummer.parse(pin.to_s(12))
+        copy = SwedishPIN.parse(pin.to_s(12))
         assert_equal pin.to_s(12), copy.to_s(12)
-      rescue Personnummer::ParseError => error
+      rescue SwedishPIN::ParseError => error
         flunk "Generated invalid PIN: #{pin.to_s(12)} (#{pin.inspect}) - #{error}"
       end
     end

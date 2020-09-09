@@ -2,7 +2,7 @@
 
 require "date"
 
-module Personnummer
+module SwedishPIN
   # @private
   # @api private
   #
@@ -16,10 +16,10 @@ module Personnummer
       @date = date || random_date
     end
 
-    # Generate a {Personnummer::PIN} with the given sequence number.
+    # Generate a {Personnummer} with the given sequence number.
     def generate(sequence_number)
       sequence_number ||= random_sequence_number
-      PIN.new(
+      Personnummer.new(
         year: date.year,
         month: date.month,
         day: date.day,
@@ -40,7 +40,7 @@ module Personnummer
 
     def control_digit(sequence_number)
       padded = ("%03d" % sequence_number)
-      Personnummer.luhn("#{date.strftime("%y%m%d")}#{padded}")
+      SwedishPIN.luhn("#{date.strftime("%y%m%d")}#{padded}")
     end
   end
 end

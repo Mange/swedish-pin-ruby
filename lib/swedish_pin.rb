@@ -4,21 +4,21 @@ require "date"
 #
 # In Swedish these are called _Personnummer_. There is also a variant called
 # "coordination number" (_Samordningsnummer_). Both of these are supported
-# using the same API; see {Personnummer::PIN#coordination_number?}.
+# using the same API; see {SwedishPIN::Personnummer#coordination_number?}.
 #
-# To get started, look at {Personnummer.valid?} and {Personnummer.parse}.
-module Personnummer
-  autoload :Generator, "personnummer/generator"
-  autoload :Parser, "personnummer/parser"
-  autoload :PIN, "personnummer/pin"
+# To get started, look at {SwedishPIN.valid?} and {SwedishPIN.parse}.
+module SwedishPIN
+  autoload :Generator, "swedish_pin/generator"
+  autoload :Parser, "swedish_pin/parser"
+  autoload :Personnummer, "swedish_pin/personnummer"
 
-  autoload :ParseError, "personnummer/errors"
-  autoload :InvalidFormat, "personnummer/errors"
-  autoload :InvalidDate, "personnummer/errors"
-  autoload :InvalidChecksum, "personnummer/errors"
+  autoload :ParseError, "swedish_pin/errors"
+  autoload :InvalidFormat, "swedish_pin/errors"
+  autoload :InvalidDate, "swedish_pin/errors"
+  autoload :InvalidChecksum, "swedish_pin/errors"
 
   # Parses a string of a personnummer and returns a
-  # {Personnummer::PIN} or raises an error.
+  # {SwedishPIN::Personnummer} or raises an error.
   #
   # Some numbers will have to relate to the current time in order to be parsed
   # correctly. For example, the PIN +201231-…+ could be in many different
@@ -29,12 +29,12 @@ module Personnummer
   #
   # @param [String] string The number to parse.
   # @param [Time] now Provide a different "parse time" context.
-  # @return [Personnummer::PIN] The parsed PIN
-  # @raise {Personnummer::ParseError} When the provided string was not valid.
+  # @return [SwedishPIN::Personnummer] The parsed PIN
+  # @raise {SwedishPIN::ParseError} When the provided string was not valid.
   # @raise {ArgumentError} When the provided value was not a +String+.
   def self.parse(string, now = Time.now)
     result = Parser.new(string, now).parse
-    PIN.new(
+    Personnummer.new(
       year: result.fetch(:year),
       month: result.fetch(:month),
       day: result.fetch(:day),
@@ -69,12 +69,12 @@ module Personnummer
   #       # day and start the sequence over.
   #       sequence_number = n % 1000
   #       date = Date.civil(1950, 1, 1) + (n / 1000)
-  #       Personnummer.generate(date, sequence_number)
+  #       SwedishPIN.generate(date, sequence_number)
   #     end
   #   end
   #
   # @example Test data
-  #   user = User.new(name: "Jane Doe", pin: Personnummer.generate)
+  #   user = User.new(name: "Jane Doe", pin: SwedishPIN.generate)
   #
   # @raise [ArgumentError] if given numbers are outside of the valid range.
   # @param [Date, Time, nil] birthday The birthday of the person the PIN identifies, or +nil+ for a random date in the past.

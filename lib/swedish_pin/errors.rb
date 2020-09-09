@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Personnummer
+module SwedishPIN
   # Error that represents a problem that occurred while parsing a
   # _Personnummer_.
   #

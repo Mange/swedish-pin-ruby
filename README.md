@@ -1,13 +1,19 @@
-# personnummer [![Build Status](https://secure.travis-ci.org/Mange/personnummer-ruby.png?branch=master)](http://travis-ci.org/Mange/personnummer-ruby)
+# swedish-pin
 
-Validate, parse, and generate [Swedish Personal Identity Numbers](https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden)) ("PINs", or *Personnummer*).
+[![Build Status](https://secure.travis-ci.org/Mange/swedish-pin-ruby.png?branch=master)](http://travis-ci.org/Mange/swedish-pin-ruby) [![Inline docs](http://inch-ci.org/github/Mange/swedish-pin-ruby.svg?branch=master)](http://inch-ci.org/github/Mange/swedish-pin-ruby)
+
+Validate, parse, and generate [Swedish Personal Identity
+Numbers](https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden))
+("PINs", or *Personnummer*).
+
+[API documentation](https://www.rubydoc.info/gems/swedish-pin)
 
 ## Installation
 
 Add this to your `Gemfile`
 
 ```ruby
-gem 'personnummer', git: 'https://github.com/Mange/personnummer-ruby.git'
+gem 'swedish-pin'
 ```
 
 Then run `bundle install`.
@@ -15,10 +21,15 @@ Then run `bundle install`.
 ## Usage
 
 ```ruby
-require 'personnummer'
+require "swedish_pin"
 
-Personnummer.valid?("8507099805") # => true
-pin = Personnummer.parse("8507099805") # => #<Personnummer::PIN …>
+# Validate strings
+SwedishPIN.valid?("8507099805") # => true
+SwedishPIN.valid?("8507099804") # => false
+
+# Parse numbers to get more information about them, or to normalize display of
+# them.
+pin = SwedishPIN.parse("8507099805") # => #<SwedishPIN::Personnummer …>
 pin.year # => 1985
 pin.birthdate # => #<Date: 1985-07-09>
 
@@ -34,12 +45,16 @@ pin.to_s(12)    # => "19850709-9805"
 pin.format_long # => "19850709-9805"
 
 # You can also generate numbers to use as example data
-fake1 = Personnummer.generate
-fake2 = Personnummer.generate(user.birthday)
+fake1 = SwedishPIN.generate
+fake2 = SwedishPIN.generate(user.birthday)
 ```
 
 ## License
 
-MIT.
+MIT. See `LICENSE` file for more details.
 
-Started out as a fork of https://github.com/personnummer/ruby
+This project started out as a fork of
+[personnummer/ruby](https://github.com/personnummer/ruby), but has since been
+almost completely rewritten.
+Despite this, the original authors retains most of the copyright since this is
+derivative work.

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-module Personnummer
+module SwedishPIN
   # Represents a parsed and valid _Personnummer_ or _Samordningsnummer_ for a
   # particular individual.
   #
   # Determine if this is a _Personnummer_ or a _Samordningsnummer_ using {coordination_number?}.
   #
   # @see https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden) Personnummer on Wikipedia.
-  class PIN
+  class Personnummer
     # @!attribute [r] year
     #   The full year of the _personnummer_. For example +1989+.
     #   @return [Integer]
@@ -37,7 +37,7 @@ module Personnummer
     # @private
     #
     # Initializes a new instance from specific values. Please consider using
-    # {Personnummer.generate} instead of you want custom instances.
+    # {SwedishPIN.generate} instead of you want custom instances.
     def initialize(year:, month:, day:, sequence_number:, control_digit:)
       @year = year
       @month = month

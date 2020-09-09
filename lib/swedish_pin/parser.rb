@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-module Personnummer
+module SwedishPIN
   # @api private
   #
   # Parser for _Personnummer_.
   #
-  # Please use {Personnummer.parse} or {Personnummer.valid?} instead.
+  # Please use {SwedishPIN.parse} or {SwedishPIN.valid?} instead.
   class Parser
     MATCHER = /
       \A
@@ -46,7 +46,7 @@ module Personnummer
       false
     end
 
-    # Return +Hash+ of parsed values to be used with {Personnummer::PIN#initialize}.
+    # Return +Hash+ of parsed values to be used with {SwedishPIN::Personnummer#initialize}.
     def parse
       validate
 
@@ -134,7 +134,7 @@ module Personnummer
         @matches["sequence_number"]
       ].join("")
 
-      if ::Personnummer.luhn(comparator) != control_digit
+      if SwedishPIN.luhn(comparator) != control_digit
         raise InvalidChecksum.new("Control digit did not match expected value", @input)
       end
     end
