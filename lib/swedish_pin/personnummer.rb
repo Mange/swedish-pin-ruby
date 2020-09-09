@@ -8,6 +8,7 @@ module SwedishPIN
   #
   # @see https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden) Personnummer on Wikipedia.
   class Personnummer
+    attr_reader :year, :month, :day, :sequence_number, :control_digit
     # @!attribute [r] year
     #   The full year of the _personnummer_. For example +1989+.
     #   @return [Integer]
@@ -31,7 +32,6 @@ module SwedishPIN
     #   The last digit of the _personnummer_. It acts as a checksum of the
     #   previous numbers.
     #   @return [Integer]
-    attr_reader :year, :month, :day, :sequence_number, :control_digit
 
     # @api private
     # @private
