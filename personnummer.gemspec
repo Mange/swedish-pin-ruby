@@ -1,8 +1,9 @@
 $:.push File.expand_path("../lib", __FILE__)
+require "swedish_pin/version"
 
 Gem::Specification.new do |s|
   s.name = "swedish-pin"
-  s.version = "1.0.0"
+  s.version = SwedishPIN::VERSION
   s.date = "2020-08-09"
   s.summary = "Work with Swedish PINs (Personnummer)"
   s.description = "Parse, validate, and generate Swedish Personal Identity Numbers (PINs / Personnummer)"

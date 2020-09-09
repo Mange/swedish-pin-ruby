@@ -11,6 +11,7 @@ module SwedishPIN
   autoload :Generator, "swedish_pin/generator"
   autoload :Parser, "swedish_pin/parser"
   autoload :Personnummer, "swedish_pin/personnummer"
+  autoload :VERSION, "swedish_pin/version"
 
   autoload :ParseError, "swedish_pin/errors"
   autoload :InvalidFormat, "swedish_pin/errors"
