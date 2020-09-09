@@ -1,28 +1,45 @@
-# personnummer [![Build Status](https://secure.travis-ci.org/personnummer/ruby.png?branch=master)](http://travis-ci.org/personnummer/ruby)
+# personnummer [![Build Status](https://secure.travis-ci.org/Mange/personnummer-ruby.png?branch=master)](http://travis-ci.org/Mange/personnummer-ruby)
 
-Validate personal identity numbers.
+Validate, parse, and generate [Swedish Personal Identity Numbers](https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden)) ("PINs", or *Personnummer*).
 
 ## Installation
 
 Add this to your `Gemfile`
 
-```
-gem 'personnummer', :git => 'https://github.com/personnummer/ruby.git'
+```ruby
+gem 'personnummer', git: 'https://github.com/Mange/personnummer-ruby.git'
 ```
 
-Then run `bundle install`
+Then run `bundle install`.
 
-## Example
+## Usage
 
 ```ruby
 require 'personnummer'
 
-puts Personnummer.valid?("8507099805")
-# => True
-```
+Personnummer.valid?("8507099805") # => true
+pin = Personnummer.parse("8507099805") # => #<Personnummer::PIN …>
+pin.year # => 1985
+pin.birthdate # => #<Date: 1985-07-09>
 
-See [test/test_personnummer.rb](test/test_personnummer.rb) for more examples.
+# The 10-digit variant also knows about century separators.
+pin.to_s     # => "850709-9805"
+pin.to_s(10) # => "850709-9805"
+pin.format_short(Date.civil(2025, 12, 1)) # => "850709-9805"
+pin.format_short(Date.civil(2085, 12, 1)) # => "850709+9805"
+
+# Use unofficial 12-digit format for a stable string that doesn't change
+# depending on today's date when storing it.
+pin.to_s(12)    # => "19850709-9805"
+pin.format_long # => "19850709-9805"
+
+# You can also generate numbers to use as example data
+fake1 = Personnummer.generate
+fake2 = Personnummer.generate(user.birthday)
+```
 
 ## License
 
-MIT
+MIT.
+
+Started out as a fork of https://github.com/personnummer/ruby

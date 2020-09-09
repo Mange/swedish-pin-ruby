@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    personnummer (3.0.0)
+    personnummer (4.0.0)
 
 GEM
   remote: https://rubygems.org/
