@@ -46,7 +46,7 @@ module Personnummer
       false
     end
 
-    # Return +Hash+ of parsed values to be used with {Personnummer::Personnummer#initialize}.
+    # Return +Hash+ of parsed values to be used with {Personnummer::PIN#initialize}.
     def parse
       validate
 

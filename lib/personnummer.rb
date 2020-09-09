@@ -4,13 +4,13 @@ require "date"
 #
 # In Swedish these are called _Personnummer_. There is also a variant called
 # "coordination number" (_Samordningsnummer_). Both of these are supported
-# using the same API; see {Personnummer::Personnummer#coordination_number?}.
+# using the same API; see {Personnummer::PIN#coordination_number?}.
 #
 # To get started, look at {Personnummer.valid?} and {Personnummer.parse}.
 module Personnummer
   autoload :Generator, "personnummer/generator"
   autoload :Parser, "personnummer/parser"
-  autoload :Personnummer, "personnummer/personnummer"
+  autoload :PIN, "personnummer/pin"
 
   autoload :ParseError, "personnummer/errors"
   autoload :InvalidFormat, "personnummer/errors"
@@ -18,7 +18,7 @@ module Personnummer
   autoload :InvalidChecksum, "personnummer/errors"
 
   # Parses a string of a personnummer and returns a
-  # {Personnummer::Personnummer} or raises an error.
+  # {Personnummer::PIN} or raises an error.
   #
   # Some numbers will have to relate to the current time in order to be parsed
   # correctly. For example, the PIN +201231-…+ could be in many different
@@ -29,12 +29,12 @@ module Personnummer
   #
   # @param [String] string The number to parse.
   # @param [Time] now Provide a different "parse time" context.
-  # @return [Personnummer::Personnummer] The parsed PIN
+  # @return [Personnummer::PIN] The parsed PIN
   # @raise {Personnummer::ParseError} When the provided string was not valid.
   # @raise {ArgumentError} When the provided value was not a +String+.
   def self.parse(string, now = Time.now)
     result = Parser.new(string, now).parse
-    Personnummer.new(
+    PIN.new(
       year: result.fetch(:year),
       month: result.fetch(:month),
       day: result.fetch(:day),

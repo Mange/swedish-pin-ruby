@@ -18,7 +18,7 @@ Then run `bundle install`.
 require 'personnummer'
 
 Personnummer.valid?("8507099805") # => true
-pin = Personnummer.parse("8507099805") # => #<Personnummer::Personnummer …>
+pin = Personnummer.parse("8507099805") # => #<Personnummer::PIN …>
 pin.year # => 1985
 pin.birthdate # => #<Date: 1985-07-09>
 

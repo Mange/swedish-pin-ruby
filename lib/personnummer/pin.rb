@@ -7,7 +7,7 @@ module Personnummer
   # Determine if this is a _Personnummer_ or a _Samordningsnummer_ using {coordination_number?}.
   #
   # @see https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden) Personnummer on Wikipedia.
-  class Personnummer
+  class PIN
     # @!attribute [r] year
     #   The full year of the _personnummer_. For example +1989+.
     #   @return [Integer]
