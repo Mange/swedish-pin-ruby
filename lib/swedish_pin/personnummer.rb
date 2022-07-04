@@ -175,6 +175,14 @@ module SwedishPIN
       sequence_number.even?
     end
 
+    def ==(other)
+      if other.is_a?(self.class)
+        format_long == other.format_long
+      else
+        super
+      end
+    end
+
     private
 
     def short_separator(now)

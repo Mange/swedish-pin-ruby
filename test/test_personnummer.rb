@@ -216,4 +216,16 @@ class PersonnummerTest < Minitest::Test
     assert_equal "900707+9925", pin.to_s(10, Time.new(2090, 7, 7))
     assert_equal "19900707-9925", pin.to_s(12, Time.new(2090, 7, 7))
   end
+
+  def test_equal_to_same_pin
+    pin1 = SwedishPIN.parse("900707-9925")
+    pin2 = SwedishPIN.parse("19900707-9925")
+    pin3 = SwedishPIN.parse("198507699810")
+
+    assert_equal pin1, pin2
+    assert_equal pin2, pin1
+
+    assert pin1 != pin3
+    assert pin3 != pin2
+  end
 end
