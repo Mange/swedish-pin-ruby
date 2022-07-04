@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    swedish-pin (1.0.0)
+    swedish-pin (1.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -44,4 +44,4 @@ DEPENDENCIES
   swedish-pin!
 
 BUNDLED WITH
-   2.1.4
+   2.2.22
