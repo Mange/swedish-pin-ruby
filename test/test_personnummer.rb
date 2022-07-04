@@ -228,4 +228,29 @@ class PersonnummerTest < Minitest::Test
     assert pin1 != pin3
     assert pin3 != pin2
   end
+
+  def test_sorting_date
+    # rubocop:disable Layout/ExtraSpacing
+    oldest = SwedishPIN.parse("18990707-1279") # 1899-07-07
+    old = SwedishPIN.parse("991201+7705")      # 1899-12-01
+    new = SwedishPIN.parse("990101-5181")      # 1999-01-01
+    # rubocop:enable Layout/ExtraSpacing
+
+    assert_equal [oldest, old, new], [old, oldest, new].sort
+  end
+
+  def test_sorting_sequence_numbers
+    pin1 = SwedishPIN.parse("200101-1937")
+    pin2 = SwedishPIN.parse("200101-4709")
+    pin3 = SwedishPIN.parse("200101-8395")
+
+    assert_equal [pin1, pin2, pin3], [pin2, pin1, pin3].sort
+  end
+
+  def test_sorting_with_nil_crashes_with_expected_error
+    pin = SwedishPIN.generate
+    assert_raises(ArgumentError, /comparison of/) do
+      [pin, nil].sort
+    end
+  end
 end

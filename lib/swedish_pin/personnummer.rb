@@ -8,6 +8,8 @@ module SwedishPIN
   #
   # @see https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden) Personnummer on Wikipedia.
   class Personnummer
+    include Comparable
+
     attr_reader :year, :month, :day, :sequence_number, :control_digit
     # @!attribute [r] year
     #   The full year of the _personnummer_. For example +1989+.
@@ -178,6 +180,14 @@ module SwedishPIN
     def ==(other)
       if other.is_a?(self.class)
         format_long == other.format_long
+      else
+        super
+      end
+    end
+
+    def <=>(other)
+      if other.is_a?(self.class)
+        format_long <=> other.format_long
       else
         super
       end
