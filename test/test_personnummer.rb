@@ -253,4 +253,20 @@ class PersonnummerTest < Minitest::Test
       [pin, nil].sort
     end
   end
+
+  def test_hashes_on_underlying_pin
+    pin1 = SwedishPIN.generate
+    pin2 = SwedishPIN.generate
+
+    hash = {pin1 => 1}
+
+    assert_equal 1, hash[pin1]
+    assert_nil hash[pin2]
+
+    pin1_copy = SwedishPIN.parse(pin1.format_long)
+    assert_equal 1, hash[pin1_copy]
+
+    assert_nil hash[pin1.format_long]
+    assert_nil hash[pin1.format_short]
+  end
 end

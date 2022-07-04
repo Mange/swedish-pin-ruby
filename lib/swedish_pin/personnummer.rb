@@ -193,6 +193,11 @@ module SwedishPIN
       end
     end
 
+    def hash
+      [self.class, format_long].hash
+    end
+    alias_method :eql?, :==
+
     private
 
     def short_separator(now)
