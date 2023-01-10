@@ -2,6 +2,8 @@ require "minitest/autorun"
 require "swedish_pin"
 
 class PersonnummerTest < Minitest::Test
+  parallelize_me!
+
   def assert_parse_error(input, type)
     assert_raises(type) { SwedishPIN.parse(input) }
   end

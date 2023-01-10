@@ -7,12 +7,10 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.1)
-    minitest (5.14.2)
     parallel (1.19.2)
     parser (2.7.1.4)
       ast (~> 2.4.1)
     rainbow (3.0.0)
-    rake (13.0.1)
     regexp_parser (1.7.1)
     rexml (3.2.4)
     rubocop (0.90.0)
@@ -38,8 +36,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  minitest
-  rake
   standard
   swedish-pin!
 
