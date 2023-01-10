@@ -8,37 +8,37 @@ module SwedishPIN
   #
   # Generator for PINs.
   class Generator
-    # The date all generated PINs will be based on.
-    attr_reader :date
-
     # Creates a new generator for a particular date.
-    def initialize(date)
-      @date = date || random_date
+    def initialize(random: Random)
+      @random = random
     end
 
     # Generate a {Personnummer} with the given sequence number.
-    def generate(sequence_number)
+    def generate(date: random_date, sequence_number: random_sequence_number)
+      # Handle someone explicitly passing `nil`.
+      date ||= random_date
       sequence_number ||= random_sequence_number
+
       Personnummer.new(
         year: date.year,
         month: date.month,
         day: date.day,
         sequence_number: sequence_number,
-        control_digit: control_digit(sequence_number)
+        control_digit: control_digit(date, sequence_number)
       )
     end
 
     private
 
     def random_date
-      Date.today - Random.rand(0..(110 * 365))
+      Date.today - @random.rand(0..(110 * 365))
     end
 
     def random_sequence_number
-      Random.rand(0..999)
+      @random.rand(0..999)
     end
 
-    def control_digit(sequence_number)
+    def control_digit(date, sequence_number)
       padded = ("%03d" % sequence_number)
       SwedishPIN.luhn("#{date.strftime("%y%m%d")}#{padded}")
     end

@@ -2,36 +2,28 @@ require "minitest/autorun"
 require "swedish_pin"
 
 class GeneratorTest < Minitest::Test
-  def with_predetermined_seed(seed)
-    restoring_seed = Random.new_seed
-    Random.srand(seed)
-    yield
-  ensure
-    Random.srand(restoring_seed)
-  end
-
   def test_generating_specific_date_and_sequence
-    assert_equal "19890707-8136", SwedishPIN.generate(Date.civil(1989, 7, 7), "813").to_s(12)
-    assert_equal "19890707-8136", SwedishPIN.generate(Date.civil(1989, 7, 7), 813).to_s(12)
+    assert_equal(
+      "19890707-8136",
+      SwedishPIN.generate(Date.civil(1989, 7, 7), "813").to_s(12)
+    )
+    assert_equal(
+      "19890707-8136",
+      SwedishPIN.generate(Date.civil(1989, 7, 7), 813).to_s(12)
+    )
 
-    assert_equal "890707-0133", SwedishPIN.generate(Date.civil(1989, 7, 7), 13).to_s(10)
+    assert_equal(
+      "890707-0133",
+      SwedishPIN.generate(Date.civil(1989, 7, 7), 13).to_s(10)
+    )
   end
 
   def test_generating_specific_date_picks_random_sequence
-    pin1, pin2, pin3 = nil
     date = Date.civil(1989, 7, 7)
 
-    with_predetermined_seed(1337) do
-      pin1 = SwedishPIN.generate(date)
-    end
-
-    with_predetermined_seed(4242) do
-      pin2 = SwedishPIN.generate(date)
-    end
-
-    with_predetermined_seed(1337) do
-      pin3 = SwedishPIN.generate(date)
-    end
+    pin1 = SwedishPIN::Generator.new(random: Random.new(1337)).generate(date: date)
+    pin2 = SwedishPIN::Generator.new(random: Random.new(4242)).generate(date: date)
+    pin3 = SwedishPIN::Generator.new(random: Random.new(1337)).generate(date: date)
 
     assert_equal pin1.to_s, pin3.to_s
     refute_equal pin1.to_s, pin2.to_s
@@ -42,19 +34,9 @@ class GeneratorTest < Minitest::Test
   end
 
   def test_generating_picks_random_date_and_sequence
-    pin1, pin2, pin3 = nil
-
-    with_predetermined_seed(1337) do
-      pin1 = SwedishPIN.generate
-    end
-
-    with_predetermined_seed(4242) do
-      pin2 = SwedishPIN.generate
-    end
-
-    with_predetermined_seed(1337) do
-      pin3 = SwedishPIN.generate
-    end
+    pin1 = SwedishPIN::Generator.new(random: Random.new(1337)).generate
+    pin2 = SwedishPIN::Generator.new(random: Random.new(4242)).generate
+    pin3 = SwedishPIN::Generator.new(random: Random.new(1337)).generate
 
     assert_equal pin1.to_s, pin3.to_s
     refute_equal pin1.to_s, pin2.to_s
