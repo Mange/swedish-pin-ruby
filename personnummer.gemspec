@@ -3,7 +3,7 @@ require_relative "lib/swedish_pin/version"
 Gem::Specification.new do |s|
   s.name = "swedish-pin"
   s.version = SwedishPIN::VERSION
-  s.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
+  s.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   s.license = "MIT"
   s.summary = "Work with Swedish PINs (Personnummer)"

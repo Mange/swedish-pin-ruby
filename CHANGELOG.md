@@ -7,10 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Breaking changes
+
+* Minimum supported Ruby version bumped from 2.5 to 2.7.
+
 ### Fixed
 
 * PINs with future birthdates are now parsed as long as they are for the
-current year.
+  current year.
     * **Example:** `20xyab-nnnn` used to be parsed as `1920` until `2020-xy-ab`,
     but now it's parsed as `2020` from 2020-01-01 and onwards. This is more
     correct, since all 1920s PINs should be written with a `+` after
@@ -20,7 +24,12 @@ current year.
 
 ### Removed
 
-* Explicit installation of `rake` and `minitest` as development dependencies.
+* Explicit installation of `rake` and `minitest` as development dependencies
+  removed. Now relying on the versions bundled with Ruby.
+
+### Other
+
+* Travis CI setup changed into Github Actions.
 
 ## [1.1.0] - 2022-07-04
 
