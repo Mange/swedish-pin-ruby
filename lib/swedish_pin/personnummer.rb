@@ -201,6 +201,8 @@ module SwedishPIN
     private
 
     def short_separator(now)
+      # Turn into `+` on the same year as the PINs 100th birthday, even before
+      # the actual date.
       if year <= (now.year - 100)
         "+"
       else
