@@ -44,7 +44,7 @@ module SwedishPIN
       @year = year
       @month = month
       @coordination_number = day > 60
-      @day = (day > 60 ? day - 60 : day)
+      @day = ((day > 60) ? day - 60 : day)
       @sequence_number = sequence_number
       @control_digit = control_digit
     end

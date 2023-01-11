@@ -17,7 +17,7 @@ module SwedishPIN
       (?<sequence_number>\d{3})
       (?<control_digit>\d)
       \z
-    /x.freeze
+    /x
     private_constant :MATCHER
 
     # Setup a new parser.
