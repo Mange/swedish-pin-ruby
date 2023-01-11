@@ -2,6 +2,8 @@ require "minitest/autorun"
 require "swedish_pin"
 
 class PersonnummerTest < Minitest::Test
+  parallelize_me!
+
   def assert_parse_error(input, type)
     assert_raises(type) { SwedishPIN.parse(input) }
   end
@@ -86,19 +88,38 @@ class PersonnummerTest < Minitest::Test
 
     # If the date has not passed yet in this century, guess last century.
     assert_equal 1912, SwedishPIN.parse("121212-2442", now).year
-    assert_equal 1910, SwedishPIN.parse("101011-5283", now).year
     assert_equal 2009, SwedishPIN.parse("090909-9640", now).year
     assert_equal 1989, SwedishPIN.parse("890909-7761", now).year
 
-    # Today counts as "passed".
+    # These PINs can't be from 1910, or else they would've been using `+`
+    # separator. It must be 2010. First date is in the future, but it's still
+    # on the 100th year since 1910.
+    assert_equal 2010, SwedishPIN.parse("101011-5283", now).year
     assert_equal 2010, SwedishPIN.parse("101010-3289", now).year
 
-    # The "+" separator means >= 100 years, so don't guess the wrong century
+    # This PIN, on the other hand, probably can't be from 2011 since that year
+    # has not happened yet. That means that 1911 is more likely. It's not been
+    # 100 years yet, so the `-` separator should be used.
     assert_equal 1911, SwedishPIN.parse("111111-4425", now).year
+    # …and this one uses `+` anyway, so it must be even further back, in 1811.
     assert_equal 1811, SwedishPIN.parse("111111+4425", now).year
 
+    # These would've been in 2010 with `-`, but uses `+`.
     assert_equal 1910, SwedishPIN.parse("100101+7969", now).year
     assert_equal 1909, SwedishPIN.parse("090909+9640", now).year
+  end
+
+  def test_large_century_guessing_sample
+    1000.times do
+      original = SwedishPIN.generate
+      pin_string = original.to_s(12)
+
+      from_10 = SwedishPIN.parse(original.to_s(10))
+
+      assert_equal pin_string, from_10.to_s(12), -> {
+        "PIN #{pin_string} parsed as #{from_10.to_s(10)} → #{from_10.to_s(12)}"
+      }
+    end
   end
 
   def test_validation_of_control_digits
@@ -215,6 +236,44 @@ class PersonnummerTest < Minitest::Test
     assert_equal "900707-9925", pin.to_s(10, Time.now)
     assert_equal "900707+9925", pin.to_s(10, Time.new(2090, 7, 7))
     assert_equal "19900707-9925", pin.to_s(12, Time.new(2090, 7, 7))
+  end
+
+  def test_10_digit_at_100_years
+    # NOTE: Should become + the same year as the person's 100th birthday, even
+    # before their birthday.
+    #
+    # From Skatteverket:
+    #   > Mellan födelsetiden och födelsenumret finns ett bindestreck (-), som
+    #   > byts ut mot ett plustecken (+) det år en person fyller 100 år.
+    # See: https://skatteverket.se/privat/folkbokforing/personnummerochsamordningsnummer.4.3810a01c150939e893f18c29.html
+    full_pin = "19231202-3100"
+    [
+      #      Current time    Expected 10-digit PIN
+      [Time.new(2022, 12, 31), "231202-3100"],
+      [Time.new(2023, 1, 1), "231202+3100"]
+    ].each do |(now, short_pin)|
+      # Serializing the long pin into the short format works correctly
+      pin = SwedishPIN.parse(full_pin, now)
+      assert_equal(
+        short_pin,
+        pin.to_s(10, now),
+        -> {
+          "On #{now.to_date} the PIN #{full_pin} should " \
+            "be #{short_pin} when using 10 digits"
+        }
+      )
+
+      # …and parsing the short pin should yield the correct long PIN.
+      pin = SwedishPIN.parse(short_pin, now)
+      assert_equal(
+        full_pin,
+        pin.to_s(12, now),
+        -> {
+          "On #{now.to_date} the short PIN #{short_pin} should " \
+          "be parsed into #{full_pin}"
+        }
+      )
+    end
   end
 
   def test_equal_to_same_pin

@@ -17,7 +17,7 @@ module SwedishPIN
       (?<sequence_number>\d{3})
       (?<control_digit>\d)
       \z
-    /x.freeze
+    /x
     private_constant :MATCHER
 
     # Setup a new parser.
@@ -105,19 +105,30 @@ module SwedishPIN
     end
 
     def guess_century
-      guessed_year = (now.year / 100) * 100 + year
+      century = now.year / 100
 
-      # Don't guess future dates; skip back a century when that happens.
-      if Time.new(guessed_year, month, real_day) > now
-        guessed_year -= 100
+      # Century could take up to three different values, depending on
+      # combination of "future" dates and `+` separators.
+      #
+      #   For example, on year 2010:
+      #     100101-nnnn => 2010-01-01
+      #     110101-nnnn => 1911-01-01 (because 2011 has not happened yet)
+      #     110101+nnnn => 1811-01-01 (1911 - 100 years)
+      #     090101+nnnn => 1909-01-01 (2009 - 100 years)
+      #
+      # One step comes from using the `+` separator, which means "remove
+      # another 100 years", despite what the rest of the date seems to imply.
+
+      # Assume previous century on future years
+      if (century * 100) + year > now.year
+        century -= 1
       end
 
-      # The "+" separator means another century back.
       if @matches["separator"] == "+"
-        guessed_year -= 100
+        century -= 1
       end
 
-      guessed_year / 100
+      century
     end
 
     def validate_match

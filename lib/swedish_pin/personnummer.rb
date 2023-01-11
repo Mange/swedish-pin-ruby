@@ -44,7 +44,7 @@ module SwedishPIN
       @year = year
       @month = month
       @coordination_number = day > 60
-      @day = (day > 60 ? day - 60 : day)
+      @day = ((day > 60) ? day - 60 : day)
       @sequence_number = sequence_number
       @control_digit = control_digit
     end
@@ -201,6 +201,8 @@ module SwedishPIN
     private
 
     def short_separator(now)
+      # Turn into `+` on the same year as the PINs 100th birthday, even before
+      # the actual date.
       if year <= (now.year - 100)
         "+"
       else

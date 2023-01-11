@@ -1,6 +1,6 @@
 # swedish-pin
 
-[![Build Status](https://secure.travis-ci.org/Mange/swedish-pin-ruby.png?branch=master)](http://travis-ci.org/Mange/swedish-pin-ruby) [![Inline docs](http://inch-ci.org/github/Mange/swedish-pin-ruby.svg?branch=master)](http://inch-ci.org/github/Mange/swedish-pin-ruby)
+[![Inline docs](http://inch-ci.org/github/Mange/swedish-pin-ruby.svg?branch=master)](http://inch-ci.org/github/Mange/swedish-pin-ruby)
 
 Validate, parse, and generate [Swedish Personal Identity
 Numbers](https://en.wikipedia.org/wiki/Personal_identity_number_(Sweden))

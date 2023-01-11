@@ -81,7 +81,7 @@ module SwedishPIN
   # @param [Date, Time, nil] birthday The birthday of the person the PIN identifies, or +nil+ for a random date in the past.
   # @param [String, Integer, nil] sequence_number The sequence number that correspond to the three digits after the birthday, or +nil+ to pick a random one.
   def self.generate(birthday = nil, sequence_number = nil)
-    Generator.new(birthday).generate(sequence_number)
+    Generator.new.generate(date: birthday, sequence_number: sequence_number)
   end
 
   # @api private
