@@ -105,3 +105,5 @@ module SwedishPIN
     ((sum.to_f / 10).ceil * 10 - sum.to_f).to_i
   end
 end
+
+autoload :SwedishPinValidator, "swedish_pin/validators/swedish_pin_validator" if defined?(::ActiveModel::EachValidator)

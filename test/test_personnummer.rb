@@ -1,4 +1,5 @@
 require "minitest/autorun"
+require "test_helper"
 require "swedish_pin"
 
 class PersonnummerTest < Minitest::Test

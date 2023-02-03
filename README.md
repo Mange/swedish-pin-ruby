@@ -49,6 +49,26 @@ fake1 = SwedishPIN.generate
 fake2 = SwedishPIN.generate(user.birthday)
 ```
 
+## Rails
+
+```ruby
+
+class Person < ApplicationRecord
+  validates :personal_number, swedish_pin: true
+end
+```
+
+Allowing for blank personal_numbers
+
+
+
+```ruby
+
+class Person < ApplicationRecord
+  validates :personal_number, swedish_pin: {allow_blank: true}
+end
+```
+
 ## License
 
 MIT. See `LICENSE` file for more details.
